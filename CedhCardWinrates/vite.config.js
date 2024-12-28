@@ -10,6 +10,7 @@ export default defineConfig({
     vue(),
     vueDevTools(),
   ],
+  base: "/CedhCardWinrates/",
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
@@ -17,6 +18,3 @@ export default defineConfig({
   },
 })
 
-module.exports = {
-  publicPath: ProcessingInstruction.env.NODE_ENV === "production" ? "/CedhCardWinrates/" : "/",
-}

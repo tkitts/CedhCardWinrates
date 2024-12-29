@@ -1,4 +1,27 @@
 <script setup>
+import { provideApolloClient, useQuery } from '@vue/apollo-composable';
+import { GET_POSTS } from './graphql/queries';
+import client from './graphql/apollo';
+import { TimePeriods } from './timePeriod';
+
+//temp hardcode
+const commander = "Yisan, the Wanderer Bard";
+const time = "ONE_MONTH";
+var after = null;
+
+const variables = {
+  "name": commander,
+  "filters": {
+  "timePeriod": time
+  },
+  "after": after
+};
+
+provideApolloClient(client)
+
+const { rq } = useQuery(GET_POSTS, variables);
+console.log(rq);
+
 defineProps({
   msg: {
     type: String,

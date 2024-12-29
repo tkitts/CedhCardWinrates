@@ -2,7 +2,9 @@
 import { provideApolloClient, useQuery } from '@vue/apollo-composable';
 import { GET_POSTS } from './graphql/queries';
 import client from './graphql/apollo';
+
 import { TimePeriods } from './timePeriod';
+
 
 //temp hardcode
 const commander = "Yisan, the Wanderer Bard";
@@ -19,8 +21,8 @@ const variables = {
 
 provideApolloClient(client)
 
-const { rq } = useQuery(GET_POSTS, variables);
-console.log(rq);
+const rq = useQuery(GET_POSTS, variables);
+console.log(rq.result);
 
 defineProps({
   msg: {

@@ -70,8 +70,8 @@ async function getCards (){
 </script>
 
 <template>
-  <div class="">
-    <div class="form">
+  <div >
+    <div>
       <div>
         Enter your commander and timeframe to get average card winrate
         <v-select
@@ -90,8 +90,8 @@ async function getCards (){
       <br>
       <button @click="getCards">Submit</button>
     <div>
-      Winrate: {{ wins/games }}%<br>
-      Drawrate: {{ draws/games }}%<br>
+      Winrate: {{ wins/games*100 }}%<br>
+      Drawrate: {{ draws/games*100 }}%<br>
       Games in dataset: {{ games }}<br>
     </div>
   </div>
@@ -102,8 +102,8 @@ async function getCards (){
             <img v-if="card[4] != null" :src="card[5]" >
             <br>
             {{ card[0] }}<br>
-            winrate: {{ card[1] }}%<br>
-            drawrate: {{ card[4] }}%<br>
+            winrate: {{ card[1]*100 }}%<br>
+            drawrate: {{ card[4]*100 }}%<br>
             inclusionrate: {{ card[2] }}%<br>
             included Games: {{ card[3] }}
           </div>
@@ -115,37 +115,27 @@ async function getCards (){
 
 <style scoped>
 
-.form {
-
-}
 
 .greetings h1,
 .greetings h3 {
   text-align: center;
 }
 
-@media (min-width: 1024px) {
-  .greetings h1,
-  .greetings h3 {
-    text-align: left;
-  }
-}
 .gridBox{
   flex-direction: column;
   justify-content: flex-end;
   overflow-y: scroll;
-border: 5px solid var(--color-border);
+  border: 5px solid var(--color-border);
     background: var(--color-background);
-
+  width: fit-content;
 }
 .grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(92px,1fr));
+  grid-template-columns: repeat(5, minmax(10%, 1fr));
   gap: 10px;
-
+  column-gap:40px;
   flex-direction: column;
   justify-content: flex-end;
-  width:fit-content;
-  
+  width: fit-content;
 }
 </style>

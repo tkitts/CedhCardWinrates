@@ -10,7 +10,8 @@ const headLink = new ApolloLink((operation, forward) => {
   })
   return forward(operation);
 })
-const httpLink = new HttpLink({ uri: "/api" });
+
+const httpLink = new HttpLink({ uri: process.env.NODE_ENV === 'development' ? "/api" : 'https://edhtop16.com/api/graphql'});
 const client = new ApolloClient({
   link: headLink.concat(httpLink),
   cache: new InMemoryCache(),

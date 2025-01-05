@@ -28,6 +28,8 @@ getCommanders();
 
 async function getCommanders(){
   var array = [];
+  console.log(GET_COMMANDERS);
+  console.log(client);
   var {loading, load, error} = useLazyQuery(GET_COMMANDERS, null);
   var resultF = await load();
   while(true){
@@ -75,6 +77,7 @@ async function getCards (){
       <div>
         Enter your commander and timeframe to get average card winrate
         <v-select
+        style="color: blue"
         v-model="commander" 
         label="name"
         placeholder="Select a Commander"
@@ -82,6 +85,7 @@ async function getCards (){
         </v-select>
 
         <v-select
+        style="color: blue"
         v-model="timeFrame" 
         placeholder="Select a Time frame"
         :options="times">

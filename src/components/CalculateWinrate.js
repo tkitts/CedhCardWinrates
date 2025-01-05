@@ -13,7 +13,7 @@ function calculateWinrate(rq, winratePerCard, include, exclude) {
     for(const node of nodes){
         const wins = node.node.wins;
         const draws = node.node.draws;
-        const games = node.node.wins+node.node.losses + node.node.draws;
+        const games = node.node.wins+ node.node.losses + node.node.draws;
         const cards = node.node.maindeck;
 
         totalWins += wins;
@@ -62,28 +62,28 @@ export async function getCardWinrates(commander, time){
     var totalGames = 0;
     var totalDraws = 0;
     while (true){
-    var [addedWins, addedGames, addedDraws] = calculateWinrate(resultF, winratePerCard, null, null)
-    totalWins += addedWins;
-    totalGames += addedGames;
-    totalDraws += addedDraws;
-    if(!(resultF.commander.entries.pageInfo.hasNextPage)){
-        break;
-    }
-    else{
-        const variables = {
-            "name": commander,
-            "filters": {
-            "timePeriod": time
-            },
-            "after": resultF.commander.entries.pageInfo.endCursor
-        };
-
-        var {result, load, error, loading} = useLazyQuery(GET_CARDS, variables);
-        var resultF = await load();
-        if(error.value){
-            return error
+        var [addedWins, addedGames, addedDraws] = calculateWinrate(resultF, winratePerCard, null, null)
+        totalWins += addedWins;
+        totalGames += addedGames;
+        totalDraws += addedDraws;
+        if(!(resultF.commander.entries.pageInfo.hasNextPage)){
+            break;
         }
-    }
+        else{
+            const variables = {
+                "name": commander,
+                "filters": {
+                "timePeriod": time
+                },
+                "after": resultF.commander.entries.pageInfo.endCursor
+            };
+
+            var {result, load, error, loading} = useLazyQuery(GET_CARDS, variables);
+            var resultF = await load();
+            if(error.value){
+                return error
+            }
+        }
     }
     //subtract base winrate from each card winrate
     for (const card in winratePerCard){

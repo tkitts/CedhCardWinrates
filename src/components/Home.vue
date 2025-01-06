@@ -30,11 +30,22 @@ async function getCommanders(){
   var array = [];
   console.log(GET_COMMANDERS);
   console.log(client);
-  var {loading, load, error} = useLazyQuery(GET_COMMANDERS, null);
+
+  const variables = {
+        "after": null,
+        "first": 99999
+    };
+  var {loading, load, error} = useLazyQuery(GET_COMMANDERS, variables);
   var resultF = await load();
   while(true){
     for(const card in resultF.commanders.edges){
-      array.push(resultF.commanders.edges[card].node.name);
+      //this check shouldn't be necessary
+      if(!array.includes(resultF.commanders.edges[card].node.name)){
+        array.push(resultF.commanders.edges[card].node.name);
+      }
+      else{
+        console.log("something wrong with the api produced a duplicate")
+      }
     }
     if(!(resultF.commanders.pageInfo.hasNextPage)){
         commanders.value = array;
@@ -43,7 +54,8 @@ async function getCommanders(){
     }
     else{
       const variables = {
-        "after": resultF.commanders.pageInfo.endCursor
+        "after": resultF.commanders.pageInfo.endCursor,
+        "first": 99999
       };
       load = useLazyQuery(GET_COMMANDERS, variables).load;
       resultF = await load();

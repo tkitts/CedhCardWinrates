@@ -1,9 +1,9 @@
 import { gql } from "@apollo/client/core";
 
 export const GET_CARDS = gql`
-  query CardsQuery($name: String!, $filters: EntriesFilter, $after: String) {
+  query CardsQuery($first: Int, $name: String!, $filters: EntriesFilter, $after: String) {
     commander(name: $name) {
-      entries(filters: $filters, after: $after) {
+      entries(first: $first, filters: $filters, after: $after) {
         edges {
           node {
             wins
@@ -13,6 +13,7 @@ export const GET_CARDS = gql`
               name
               imageUrls
             }
+            id
           }
         }
         pageInfo {
@@ -20,15 +21,17 @@ export const GET_CARDS = gql`
           hasNextPage
         }
       }
+      id
     }
   }`;
 
   export const GET_COMMANDERS = gql`
-  query CommandersQuery ($after: String) {
-    commanders(after: $after) {
+  query CommandersQuery ($first: Int, $after: String) {
+    commanders(first: $first, after: $after) {
       edges {
         node {
           name
+          id
         }
       }
       pageInfo {

@@ -49,7 +49,8 @@ export async function getCardWinrates(commander, time){
         "filters": {
         "timePeriod": time
         },
-        "after": null
+        "after": null,
+        "first": 999
     };
     var {result, load, error, loading} = useLazyQuery(GET_CARDS, variables);
     var resultF = await load();
@@ -75,7 +76,8 @@ export async function getCardWinrates(commander, time){
                 "filters": {
                 "timePeriod": time
                 },
-                "after": resultF.commander.entries.pageInfo.endCursor
+                "after": resultF.commander.entries.pageInfo.endCursor,
+                "first": 999
             };
 
             var {result, load, error, loading} = useLazyQuery(GET_CARDS, variables);

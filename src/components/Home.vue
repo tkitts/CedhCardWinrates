@@ -127,7 +127,7 @@ function clearFile(){
             {{ card[0] }}<br>
             winrate: {{ card[1]*100 }}%<br>
             drawrate: {{ card[4]*100 }}%<br>
-            inclusionrate: {{ card[2] }}%<br>
+            inclusionrate: {{ card[2]*100 }}%<br>
             included Games: {{ card[3] }}
           </div>
         </div>

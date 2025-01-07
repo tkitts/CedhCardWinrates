@@ -6,7 +6,7 @@ import { ref } from 'vue';
 import { TimePeriodArray } from './timePeriod';
 import { computed } from 'vue';
 import { useLazyQuery } from '@vue/apollo-composable';
-import {getCardWinrates, dictToSortedArray} from './CalculateWinrate';
+import {getCardWinrates, dictToSortedArray, filterByDecklist} from './CalculateWinrate';
 import "vue-select/dist/vue-select.css";
 import VueSelect from 'vue-select';
 //temp hardcode
@@ -24,6 +24,7 @@ const winrate = ref(false);
 const winrateArray = ref(false);
 const commanders = ref(["a","b"]);//ref(getCommanders());
 const times = ref(TimePeriodArray);
+const userDeckFile = ref(null);
 getCommanders();
 
 async function getCommanders(){
@@ -49,7 +50,6 @@ async function getCommanders(){
     }
     if(!(resultF.commanders.pageInfo.hasNextPage)){
         commanders.value = array;
-        console.log(array)
         return array;
     }
     else{
@@ -72,20 +72,27 @@ async function getCards (){
     games.value = totalGames;
     draws.value = totalDraws;
     winrate.value = sortedWinrate;
-    winrateArray.value = dictToSortedArray(sortedWinrate);
+
+    if(userDeckFile.value.files.length != 0){
+      winrate.value = await filterByDecklist(userDeckFile.value.files[0], winrate.value);
+    }
+    winrateArray.value = dictToSortedArray(winrate.value);
   }
   catch(e){
     console.log("error getting cards: "+e)
   }
 }
-  // cards.value = results["commander"]["entries"]["edges"];
-  //return the component for the card list
+function clearFile(){
+  document.getElementById("deckFile").value = "";//.userDeckFile.reset();
+}
 
 </script>
 
 <template>
   <div >
     <div>
+    <input type="file" ref="userDeckFile" accept="text/*" id="deckFile"/>
+    <button @click="clearFile()">Clear file</button>
       <div>
         Enter your commander and timeframe to get average card winrate
         <v-select

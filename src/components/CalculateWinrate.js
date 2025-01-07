@@ -128,3 +128,28 @@ function winrateComparator(a,b){
     }
     return 0;
 }
+export async function filterByDecklist(url, winratePerCard){
+    //filter to only show the cards in deck
+    var winrateInDeck = {};
+    if (url.name.includes(".txt")){
+        var content =  await url.text()
+        content = content.split("\n");
+        content.shift();
+        for(const cardQ of content){
+            const card = cardQ.replace(/\d+\s/, '');
+            //remove the empty first element
+            if(winratePerCard[card] != null){
+                winrateInDeck[card] = winratePerCard[card];
+            }
+            else{
+                winrateInDeck[card] = [0,0,0,0]
+            }
+        }
+    }
+    else{
+        console.log("Please submit a text file");
+        return null;
+    }
+
+    return winrateInDeck
+}

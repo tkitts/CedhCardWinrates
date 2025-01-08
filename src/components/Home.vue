@@ -6,7 +6,7 @@ import { ref } from 'vue';
 import { TimePeriodArray } from './timePeriod';
 import { computed } from 'vue';
 import { useLazyQuery } from '@vue/apollo-composable';
-import {getCardWinrates, dictToSortedArray, filterByDecklist} from './CalculateWinrate';
+import {getCardWinrates, dictToSortedArray, filterByDecklist, filterInclusionRate} from './CalculateWinrate';
 import "vue-select/dist/vue-select.css";
 import VueSelect from 'vue-select';
 //temp hardcode
@@ -25,6 +25,7 @@ const winrateArray = ref(false);
 const commanders = ref(["a","b"]);//ref(getCommanders());
 const times = ref(TimePeriodArray);
 const userDeckFile = ref(null);
+const inclusionRateFilter = ref(0);
 getCommanders();
 
 async function getCommanders(){
@@ -76,6 +77,9 @@ async function getCards (){
     if(userDeckFile.value.files.length != 0){
       winrate.value = await filterByDecklist(userDeckFile.value.files[0], winrate.value);
     }
+    if(inclusionRateFilter.value > 0){
+      winrate.value = filterInclusionRate(inclusionRateFilter.value, winrate.value);
+    }
     winrateArray.value = dictToSortedArray(winrate.value);
   }
   catch(e){
@@ -91,8 +95,6 @@ function clearFile(){
 <template>
   <div >
     <div>
-    <input type="file" ref="userDeckFile" accept="text/*" id="deckFile"/>
-    <button @click="clearFile()">Clear file</button>
       <div>
         Enter your commander and timeframe to get average card winrate
         <v-select
@@ -110,6 +112,12 @@ function clearFile(){
         :options="times">
         </v-select>
       </div>
+
+      <br>
+      <input type="file" ref="userDeckFile" accept="text/*" id="deckFile"/>
+      <button @click="clearFile()">Clear file</button>
+      <br>
+      Minimum Inclusion Rate: <input type="number" v-model.number="inclusionRateFilter"/>%
       <br>
       <button @click="getCards">Submit</button>
     <div>

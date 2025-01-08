@@ -89,6 +89,7 @@ export async function getCardWinrates(commander, time){
     }
     //subtract base winrate from each card winrate
     for (const card in winratePerCard){
+        //if card is included in any games
     if (winratePerCard[card][2] != 0){
         //calculate winrate adjustment
         winratePerCard[card][0] = (winratePerCard[card][1]/winratePerCard[card][2])-(totalWins/totalGames);
@@ -113,7 +114,7 @@ export async function getCardWinrates(commander, time){
 export function dictToSortedArray(winratePerCard){
     var sortedArray = [];
     for(const card in winratePerCard){
-        //name, winrate, inclusion rate, included games, drawrate
+        //name, winrate, inclusion rate, included games, drawrate, image
         sortedArray.push([card, winratePerCard[card][0], winratePerCard[card][1], winratePerCard[card][2], winratePerCard[card][3], winratePerCard[card][4]]);
     }
     sortedArray.sort(winrateComparator).reverse()
@@ -153,4 +154,13 @@ export async function filterByDecklist(url, winratePerCard){
     }
 
     return winrateInDeck
+}
+export function filterInclusionRate(minInclusion, winratePerCard){
+    var includedWinrates = {};
+    for(const card in winratePerCard){
+        if(winratePerCard[card][1] >= minInclusion*0.01){
+            includedWinrates[card] = winratePerCard[card]
+        }
+    }
+    return includedWinrates;
 }

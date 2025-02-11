@@ -12,7 +12,8 @@ const headLink = new ApolloLink((operation, forward) => {
 })
 //used to use https://proxy.cors.sh/https://edhtop16.com/api/graphql
 //in dev use /api
-const httpLink = new HttpLink({ uri: process.env.NODE_ENV === 'development' ? "/api" : 'https://thingproxy.freeboard.io/fetch/https://edhtop16.com/api/graphql'});
+//considering https://thingproxy.freeboard.io/fetch/https://edhtop16.com/api/graphql
+const httpLink = new HttpLink({ uri: process.env.NODE_ENV === 'development' ? "/api" : 'https://proxy.cors.sh/https://edhtop16.com/api/graphql'});
 const client = new ApolloClient({
   link: headLink.concat(httpLink),
   cache: new InMemoryCache(),

@@ -1,7 +1,7 @@
 import { useLazyQuery } from '@vue/apollo-composable';
 import { GET_CARDS, GET_COMMANDERS } from './graphql/queries';
 
-
+const cardsPerQuery = 999
 function calculateWinrate(rq, winratePerCard, include, exclude) {
     var nodes = rq?.commander.entries.edges;
 
@@ -50,7 +50,7 @@ export async function getCardWinrates(commander, time){
         "timePeriod": time
         },
         "after": null,
-        "first": 999
+        "first": cardsPerQuery
     };
     var {result, load, error, loading} = useLazyQuery(GET_CARDS, variables);
     var resultF = await load();
@@ -77,7 +77,7 @@ export async function getCardWinrates(commander, time){
                 "timePeriod": time
                 },
                 "after": resultF.commander.entries.pageInfo.endCursor,
-                "first": 999
+                "first": cardsPerQuery
             };
 
             var {result, load, error, loading} = useLazyQuery(GET_CARDS, variables);

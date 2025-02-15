@@ -35,7 +35,7 @@ async function getCommanders(){
 
   const variables = {
         "after": null,
-        "first": 99999
+        "first": 100
     };
   var {loading, load, error} = useLazyQuery(GET_COMMANDERS, variables);
   var resultF = await load();

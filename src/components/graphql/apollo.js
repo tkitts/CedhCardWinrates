@@ -15,7 +15,7 @@ const headLink = new ApolloLink((operation, forward) => {
 //in dev use /api
 //considering https://go.x2u.in/proxy?email=tkitts1721@gmail.com&apiKey=5273dd28&url=
 //or maybe https://corsproxy.io/?url=https://edhtop16.com/api/graphql
-const httpLink = new HttpLink({ uri: process.env.NODE_ENV === 'development' ? "/api" : 'https://api.allorigins.win/get?url=https://edhtop16.com/api/graphql'});
+const httpLink = new HttpLink({ uri: process.env.NODE_ENV === 'development' ? "/api" : 'https://api.allorigins.win/raw?url=https://edhtop16.com/api/graphql'});
 
 const client = new ApolloClient({
   link: headLink.concat(httpLink),

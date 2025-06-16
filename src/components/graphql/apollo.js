@@ -6,6 +6,7 @@ const headLink = new ApolloLink((operation, forward) => {
     headers: {
       //"Access-Control-Allow-Origin": "https://sandbox.embed.apollographql.com",
       //"Access-Control-Allow-Credentials": true
+      'apollographql-client-name': undefined,
     }
   })
   return forward(operation);
